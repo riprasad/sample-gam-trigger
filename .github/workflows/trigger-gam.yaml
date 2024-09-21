@@ -11,7 +11,9 @@ on:
 jobs:
   trigger-gam:
     uses: red-hat-data-services/Gated-Auto-Merger/.github/workflows/Gated-Auto-Merger.yaml@main
-    secrets: inherit
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      PRIVATE_KEY: ${{ secrets.PRIVATE_KEY }}
     with:
       component: "Dashboard" # only acceps inputs from the github context and the “needs” object
 
