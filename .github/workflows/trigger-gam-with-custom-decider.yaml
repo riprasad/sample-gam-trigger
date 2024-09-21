@@ -26,7 +26,8 @@ jobs:
         chmod +x custom_decider.sh
         decision=$(./custom_decider.sh)
 
-        echo "trigger_gam=${decision}" >> $GITHUB_OUTPUT
+
+        echo "trigger_gam=${decision}" | tee -a $GITHUB_OUTPUT
  
   trigger-gam:
     needs: run-decider
