@@ -1,2 +1,3 @@
 # sample-gam-trigger
-This repository holds sample GAM trigger worklow
+
+Scrum Teams should be able to decide when 

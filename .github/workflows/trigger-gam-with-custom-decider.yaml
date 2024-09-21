@@ -1,0 +1,44 @@
+name: Trigger GAM with custom decider
+
+on:
+  # schedule:
+  #   - cron: '0 12 * * 5' # Runs every Friday at 12:00 PM UTC
+    
+
+  workflow_dispatch: {}
+
+env:
+  COMPONENT: "Dashboard"
+
+jobs:
+  run-decider:
+    runs-on: ubuntu-latest
+    outputs:
+      trigger_gam: ${{ steps.decider.outputs.trigger_gam }}
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Run custom decider script
+      id: decider
+      run: |
+        cd ./.github/scripts/
+        chmod +x custom_decider.sh
+        decision=$(./custom_decider.sh)
+
+        echo "trigger_gam=${decision}" >> $GITHUB_OUTPUT
+ 
+  trigger-gam:
+    needs: run-decider
+    if: needs.run-decider.outputs.trigger_gam == 'true'
+    uses: red-hat-data-services/Gated-Auto-Merger/.github/workflows/Gated-Auto-Merger.yaml@main
+    with:
+      component: "Dashboard" # only acceps inputs from the github context and the “needs” object
+
+
+  print-gam-execution-metadata:
+    needs: trigger-gam
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print output
+        run: echo "${{ needs.trigger-gam.outputs.execution-metadata }}"

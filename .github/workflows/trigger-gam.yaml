@@ -1,0 +1,23 @@
+name: Trigger GAM
+
+on:
+  # schedule:
+  #   - cron: '0 12 * * 5' # Runs every Friday at 12:00 PM UTC
+    
+
+  workflow_dispatch: {}
+
+
+jobs:
+  trigger-gam:
+    uses: red-hat-data-services/Gated-Auto-Merger/.github/workflows/Gated-Auto-Merger.yaml@main
+    with:
+      component: "Dashboard" # only acceps inputs from the github context and the “needs” object
+
+
+  print-gam-execution-metadata:
+    needs: trigger-gam
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print output
+        run: echo "${{ needs.trigger-gam.outputs.execution-metadata }}"
