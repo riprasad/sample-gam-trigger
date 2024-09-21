@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/download-artifact@v4
         with:
-          name: output_file
+          name: metadata_file
 
       - name: Print file content
         run: cat metadata.yaml
