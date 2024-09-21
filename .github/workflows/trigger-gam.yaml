@@ -19,5 +19,9 @@ jobs:
     needs: trigger-gam
     runs-on: ubuntu-latest
     steps:
-      - name: Print output
-        run: echo "${{ needs.trigger-gam.outputs.execution-metadata }}"
+      - uses: actions/download-artifact@v4
+        with:
+          name: output_file
+
+      - name: Print file content
+        run: cat metadata.yaml
